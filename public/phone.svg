@@ -1,0 +1,17 @@
+<svg width="1080" height="2280" viewBox="0 0 1080 2280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#a21caf"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="2280" fill="#0a0a0a"/>
+  <circle cx="200" cy="300" r="300" fill="#ffffff" opacity="0.06"/>
+  <circle cx="900" cy="600" r="240" fill="#ffffff" opacity="0.08"/>
+  <circle cx="400" cy="1600" r="360" fill="#ffffff" opacity="0.06"/>
+  <rect x="0" y="0" width="1080" height="2280" fill="url(#g1)" opacity="0.25"/>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+        font-family="ui-sans-serif, system-ui, -apple-system" font-size="96" fill="#ffffff" opacity="0.7">
+    OVERLY — Mobile
+  </text>
+</svg>
