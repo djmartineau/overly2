@@ -1,14 +1,33 @@
 "use client";
 
-import React from "react";
+
+import React, { useEffect, useState } from "react";
 import GlassLens from "./GlassLens";
 import Link from "next/link";
 import Image from "next/image";
 
+declare global {
+  interface Window {
+    __skipHeroIntercept?: number;
+  }
+}
+
 export default function Header() {
+  const [motionOK, setMotionOK] = useState(false);
+  useEffect(() => {
+    try {
+      const m = window.matchMedia("(prefers-reduced-motion: reduce)");
+      setMotionOK(!m.matches);
+    } catch {
+      setMotionOK(true);
+    }
+  }, []);
+
   const handleNav = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // allow new-tab, copy link, and middle-click
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
     e.preventDefault();
-    (window as any).__skipHeroIntercept = Date.now() + 1500; // bypass first-scroll logic for 1.5s
+    window.__skipHeroIntercept = Date.now() + 1500; // bypass first-scroll logic for 1.5s
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -20,7 +39,7 @@ export default function Header() {
         style={{ width: "min(92vw, 1000px)" }}
       >
         {/* WebGL lens behind the nav content */}
-        <GlassLens enableHover enableRipple magnify={2.6} />
+        <GlassLens enableHover={motionOK} enableRipple={motionOK} magnify={2.6} />
 
         {/* Nav content above the lens */}
         <div className="relative z-10 w-full">
@@ -28,7 +47,7 @@ export default function Header() {
             <div className="flex items-center">
               <Link href="/" className="inline-flex items-center" aria-label="Overly">
                 <Image
-                  src="/OverlyLogo.svg"
+                  src="/overlylogo.svg"
                   alt="Overly logo"
                   width={110}
                   height={40}
