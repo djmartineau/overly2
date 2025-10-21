@@ -48,7 +48,7 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export default function ProcessSection() {
   const [active, setActive] = useState(STEPS[0].id);
-  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionsRef = useRef<Array<HTMLDivElement | null>>([]);
   const railRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -141,7 +141,7 @@ export default function ProcessSection() {
             return (
               <motion.div
                 key={s.id}
-                ref={(el) => (sectionsRef.current[i] = el)}
+                ref={(el: HTMLDivElement | null) => { sectionsRef.current[i] = el; }}
                 data-id={s.id}
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
