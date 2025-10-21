@@ -20,13 +20,15 @@ const PILLARS = [
   { tag: "OverlyCreative", title: "Content & production" },
 ];
 
-// Each step now has a kind and appropriate fields
-const STEPS: (
+// Discriminated union for steps
+type Step =
   | { kind: "strategy"; label: string }
-  | { kind: "exec"; tag: string; title: string }
-)[] = [
-  ...STRATEGY.map((s) => ({ kind: "strategy", label: s })),
-  ...PILLARS.map((p) => ({ kind: "exec", tag: p.tag, title: p.title })),
+  | { kind: "exec"; tag: string; title: string };
+
+// Each step now has a kind and appropriate fields
+const STEPS: Step[] = [
+  ...STRATEGY.map((s) => ({ kind: "strategy", label: s } as const)),
+  ...PILLARS.map((p) => ({ kind: "exec", tag: p.tag, title: p.title } as const)),
 ];
 
 // Child component so we can safely call hooks like useTransform per-step
