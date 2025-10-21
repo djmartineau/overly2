@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import HeroPrismBurst from "@/components/HeroPrismBurst";
+
 
 type Props = {
   showPrism?: boolean;
@@ -47,15 +47,6 @@ export default function InteractiveBackground({
       className={`pointer-events-none absolute inset-0 -z-10 ${className}`}
       aria-hidden
     >
-      {/* Prism burst (SVG) behind */}
-      {showPrism && (
-        <HeroPrismBurst
-          className="absolute inset-0"
-          width={1200}
-          height={680}
-          centerBias={{ x: 0, y: -0.45 }}
-        />
-      )}
 
       {/* Mouse-reactive glow blob */}
       <motion.div
