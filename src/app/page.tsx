@@ -1,7 +1,8 @@
 "use client";
 
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
+import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
+import Hero3 from "@/components/Hero3";
 import WorkCard from "@/components/WorkCard";
 import Footer from "@/components/Footer";
 import Container from "@/components/Container";
@@ -11,31 +12,54 @@ import CaseStudyScroller from "@/components/CaseStudyScroller";
 import ContactCTA from "@/components/ContactCTA";
 import Capabilities from "@/components/Capabilities";
 import Testimonials from "@/components/Testimonials";
+import ProcessSection from "@/components/ProcessSection";
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const containerVariants: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0 } },
+};
+
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-100">
-      <Header />
-      <section id="top">
-        <Hero />
-      </section>
-      <section id="process">
+    <motion.main
+      className="min-h-screen bg-neutral-950 text-neutral-100"
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+    >
+      <motion.section id="top" variants={itemVariants} transition={{ delay: 0.0 }}>
+        <Hero3 />
+      </motion.section>
+      <motion.section id="marquee" variants={itemVariants} transition={{ delay: 0.4 }}>
         <Marquee />
-      </section>
-      <section id="work">
+      </motion.section>
+      <motion.section id="process" variants={itemVariants} transition={{ delay: 0.6 }}>
+        <ProcessSection />
+      </motion.section>
+      <motion.section id="strategy" variants={itemVariants} transition={{ delay: 0.9 }}>
         <ProcessExperience />
-      </section>
-      <section id="services">
+      </motion.section>
+      <motion.section id="services" variants={itemVariants} transition={{ delay: 1.2 }}>
         <Capabilities />
-      </section>
-      <section id="about">
+      </motion.section>
+      <motion.section id="about" variants={itemVariants} transition={{ delay: 1.5 }}>
         <CaseStudyScroller />
         <Testimonials />
-      </section>
-      <section id="contact">
+      </motion.section>
+      <motion.section id="contact" variants={itemVariants} transition={{ delay: 1.8 }}>
         <ContactCTA />
-      </section>
-      <section className="py-12">
+      </motion.section>
+      <motion.section className="py-12" variants={itemVariants} transition={{ delay: 2.1 }}>
         <Container>
           <div className="flex items-end justify-between">
             <h2 className="text-xl font-semibold text-white">Recent work</h2>
@@ -61,8 +85,8 @@ export default function Home() {
             />
           </div>
         </Container>
-      </section>
+      </motion.section>
       <Footer />
-    </main>
+    </motion.main>
   );
 }

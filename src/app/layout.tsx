@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, ReactNode } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
@@ -21,7 +22,7 @@ const geistMono = Geist_Mono({
 });
 
 
-function Splash() {
+function Splash({ ready, onEnter }: { ready: boolean; onEnter: () => void }) {
   const [progress, setProgress] = useState(0);
   const DURATION = 3000; // ms, keep in sync with SPLASH_MS
 
@@ -37,9 +38,7 @@ function Splash() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // Ring geometry
-  const R = 54; // radius used in the viewBox below
-  const CIRC = 2 * Math.PI * R;
+  const showButton = progress >= 100;
 
   return (
     <div className="fixed inset-0 z-[999] grid place-items-center bg-neutral-950">
@@ -49,28 +48,45 @@ function Splash() {
           <Image
             src="/Overly.svg"
             alt="Overly Logo"
-            width={88}
-            height={88}
-            sizes="88px"
+            width={100}
+            height={100}
+            sizes="100px"
             priority
             className="select-none pointer-events-none"
             style={{ animation: `splash-spin ${DURATION}ms linear` }}
           />
         </div>
 
-        {/* Blue progress bar under the disc */}
-        <div aria-hidden className="w-44 h-2 rounded-full bg-white/15 overflow-hidden">
-          <div
-            className="h-full bg-blue-500 rounded-full transition-[width] duration-100"
-            style={{ width: `${progress}%` }}
-          />
+        {/* Progress or Enter (fixed height to prevent vertical shift) */}
+        <div className="w-44 h-10 flex items-center justify-center">
+          {!showButton ? (
+            <div aria-hidden className="w-full h-2 rounded-full bg-white/15 overflow-hidden">
+              <div
+                className="h-full bg-blue-500 rounded-full transition-[width] duration-100"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          ) : ready ? (
+            <span
+              role="button"
+              tabIndex={0}
+              onClick={onEnter}
+              className="text-blue-500 cursor-pointer hover:text-white hover:scale-105 transition-transform font-medium tracking-wide"
+            >
+              Enter
+            </span>
+          ) : (
+            <span className="text-blue-500 opacity-50 cursor-not-allowed font-medium tracking-wide">
+              Enter
+            </span>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-const SPLASH_MS = 3000;
+
 
 export default function RootLayout({
   children,
@@ -78,6 +94,9 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   const [isSplashVisible, setSplashVisible] = useState(true);
+  const [isReady, setReady] = useState(false);
+  const [gateOpen, setGateOpen] = useState(false);
+  const ENTER_HOLD_MS = 1200; // keep splash visible this long after clicking Enter
 
   useEffect(() => {
     let cancelled = false;
@@ -92,11 +111,12 @@ export default function RootLayout({
       });
     }
 
+    // MIN_SPLASH_MS includes delay for gateOpen to allow background visibility before content animates in
     const MIN_SPLASH_MS = 1200;
     const MAX_SPLASH_MS = 5000;
 
-    const critical: Promise<any>[] = [
-      (document as any).fonts?.ready ?? Promise.resolve(),
+    const critical: Promise<unknown>[] = [
+      (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts?.ready ?? Promise.resolve(),
       preloadImage("/Overly.svg"),
     ];
 
@@ -108,7 +128,7 @@ export default function RootLayout({
       if (leftToMin > 0) {
         await new Promise((r) => setTimeout(r, leftToMin));
       }
-      if (!cancelled) setSplashVisible(false);
+      if (!cancelled) setReady(true);
     });
 
     return () => {
@@ -125,6 +145,20 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-950 text-neutral-100 min-h-screen relative`}
       >
         <BackgroundFX />
+        {/* Fullscreen splash overlay while booting */}
+        {isSplashVisible && (
+          <Splash
+            ready={isReady}
+            onEnter={() => {
+              // Keep splash on-screen a bit longer for a smoother handoff
+              setTimeout(() => {
+                setSplashVisible(false);
+                // tiny idle so background is visible before content animates in
+                setTimeout(() => setGateOpen(true), 120);
+              }, ENTER_HOLD_MS);
+            }}
+          />
+        )}
         {/* SVG filters for liquid glass effects (available globally) */}
         <svg aria-hidden="true" style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}>
           {/* Stronger liquid glass (blur + turbulence + displacement) */}
@@ -151,12 +185,20 @@ export default function RootLayout({
           </filter>
         </svg>
 
-        {isSplashVisible && <Splash />}
 
-        {!isSplashVisible && (
+        {/* Render header only after splash + delay */}
+        {gateOpen && <Header />}
+
+        {gateOpen && (
           <>
-            <Header />
-            {children}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
+              className="will-change-transform"
+            >
+              {children}
+            </motion.div>
             <MusicPlayer />
           </>
         )}

@@ -1,5 +1,5 @@
-
-
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Section from "./Section";
 
 const items = [
@@ -12,13 +12,35 @@ const items = [
   "Campaign positioning",
 ];
 
+const words = ["Strategy", "Execution"];
+
 export default function ProcessStrategy() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev === 0 ? 1 : 0));
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Section id="process-strategy">
-      <h2 className="text-3xl md:text-4xl font-bold">Our process: Strategy</h2>
-      <p className="mt-3 max-w-2xl text-white/70">
-        We pair quant with taste — models that predict, creative that persuades.
-      </p>
+      <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-10 flex overflow-hidden h-[3rem]">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.span
+            key={words[index]}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="inline-block"
+          >
+            {words[index]}
+          </motion.span>
+        </AnimatePresence>
+        <span className="ml-1">→ Execution</span>
+      </h2>
 
       <ul className="mt-8 grid gap-3 md:grid-cols-2">
         {items.map((x) => (
