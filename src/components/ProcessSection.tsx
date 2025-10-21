@@ -52,6 +52,12 @@ export default function ProcessSection() {
   const railRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
+  const makeSectionRef = (index: number): React.RefCallback<HTMLDivElement> => {
+    return (el: HTMLDivElement | null) => {
+      sectionsRef.current[index] = el;
+    };
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -141,7 +147,7 @@ export default function ProcessSection() {
             return (
               <motion.div
                 key={s.id}
-                ref={(el: HTMLDivElement | null) => { sectionsRef.current[i] = el; }}
+                ref={makeSectionRef(i)}
                 data-id={s.id}
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}

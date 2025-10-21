@@ -6,7 +6,6 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { Playfair_Display } from "next/font/google";
-import HeroWord3 from "./HeroWord3";
 import Button from "./Button";
 
 const playfair = Playfair_Display({
@@ -90,15 +89,6 @@ export default function Hero2() {
             height={210}
             className="h-auto invert w-[clamp(260px,70vw,820px)]"
             priority
-          />
-
-          {/* Rotating word */}
-          <HeroWord3
-            words={["MEMORABLE", "CREATIVE", "INNOVATIVE", "BOLD"]}
-            className="leading-none text-blue-500 font-extrabold tracking-tight text-[clamp(2.8rem,12vw,12rem)] mt-1"
-            inMs={450}
-            stayMs={1600}
-            outMs={450}
           />
 
           {/* Subcopy */}
