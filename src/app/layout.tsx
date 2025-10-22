@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+
 const BackgroundFX = dynamic(() => import("@/components/BackgroundFX"), { ssr: false });
 const MusicPlayer  = dynamic(() => import("@/components/MusicPlayer"),  { ssr: false });
 

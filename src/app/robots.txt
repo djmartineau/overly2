@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://overly.vercel.app/sitemap.xml

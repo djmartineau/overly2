@@ -4,6 +4,9 @@ import type { NextRequest } from "next/server";
 const COOKIE_NAME = process.env.SITE_COOKIE_NAME || "overly_access";
 const COOKIE_VAL  = process.env.SITE_COOKIE_VALUE || "granted";
 
+// Toggle the gate via env: SITE_LOCK=on | off (default on)
+const SITE_LOCK = (process.env.SITE_LOCK || "on") === "on";
+
 // Paths that anyone can visit
 const PUBLIC_PATHS = new Set([
   "/coming-soon",
@@ -15,6 +18,9 @@ const PUBLIC_PATHS = new Set([
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  // If lock is off, bypass middleware entirely
+  if (!SITE_LOCK) return NextResponse.next();
 
   // Allow Next.js internals & any file-like request (assets with a dot)
   if (pathname.startsWith("/_next") || pathname.includes(".")) {
