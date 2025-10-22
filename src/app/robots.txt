@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /coming-soon
 
-Sitemap: https://overly.vercel.app/sitemap.xml
+Sitemap: https://www.overlymarketing.com/sitemap.xml

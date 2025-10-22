@@ -141,6 +141,14 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         <link rel="preload" as="image" href="/Overly.svg" />
+        <meta name="apple-mobile-web-app-title" content="Overly" />
+
+        {/* Recommended favicon links */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+        {/* Optional: Safari pinned tab */}
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0b0f19" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-950 text-neutral-100 min-h-screen relative`}
