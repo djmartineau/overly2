@@ -1,6 +1,6 @@
 export default function Head() {
   const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://overly.vercel.app";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://overlymarketing.com";
 
   return (
     <>
