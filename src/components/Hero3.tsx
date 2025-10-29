@@ -51,14 +51,14 @@ export default function Hero3() {
           <HeroWord3
             words={["MEMORABLE", "CREATIVE", "INNOVATIVE", "BOLD"]}
             className="leading-none text-blue-500 font-extrabold tracking-tight text-[clamp(2.8rem,12vw,12rem)] mt-1"
-            inMs={450}
             stayMs={1600}
             outMs={450}
+            initialDelayMs={2000}
           />
 
           {/* Subcopy */}
           <p className="mt-4 max-w-2xl text-neutral-300">
-            Strategy, design, web, and content — built to convert.
+            Strategy and design for web, social media, and ads — built to convert.
           </p>
 
           {/* CTAs */}

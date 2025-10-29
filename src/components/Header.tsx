@@ -9,11 +9,14 @@ import Image from "next/image";
 declare global {
   interface Window {
     __skipHeroIntercept?: number;
+    __splashActive?: boolean;
   }
 }
 
 export default function Header() {
   const [motionOK, setMotionOK] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+
   useEffect(() => {
     try {
       const m = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -22,6 +25,18 @@ export default function Header() {
       setMotionOK(true);
     }
   }, []);
+
+  useEffect(() => {
+    const checkSplash = () => {
+      const splashActive = window.__splashActive ?? false;
+      setShowHeader(!splashActive);
+    };
+    checkSplash();
+    const interval = setInterval(checkSplash, 300);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!showHeader) return null;
 
   const handleNav = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     // allow new-tab, copy link, and middle-click

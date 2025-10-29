@@ -5,7 +5,7 @@ export default function Head() {
   return (
     <>
       {/* Primary meta */}
-      <title>Overly — Strategy, Design & Web Built to Convert</title>
+      <title>Overly — Strategy and Design for Web and Social Media - Built to Convert</title>
       <meta
         name="description"
         content="Overly crafts strategy, design, and digital experiences built to convert — from brand identity to full-scale websites."
@@ -14,10 +14,10 @@ export default function Head() {
       <link rel="icon" href="/favicon.ico" />
 
       {/* Open Graph */}
-      <meta property="og:title" content="Overly — Strategy, Design & Web Built to Convert" />
+      <meta property="og:title" content="Overly — Strategy and Design for Web, Social Media, and Ads - Built to Convert" />
       <meta
         property="og:description"
-        content="A creative and digital agency focused on clarity, conversion, and craft."
+        content="A creative and digital marketing agency focused on clarity, conversion, and craft."
       />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={baseUrl} />
@@ -28,12 +28,54 @@ export default function Head() {
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="Overly — Strategy, Design & Web Built to Convert" />
+      <meta name="twitter:title" content="Overly — Strategy and Design for Web, Social Media, and Ads - Built to Convert" />
       <meta
         name="twitter:description"
         content="Creative strategy, branding, and web — built to convert."
       />
       <meta name="twitter:image" content={`${baseUrl}/og-image.jpg`} />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Overly Marketing",
+            "url": "https://overlymarketing.com",
+            "logo": "https://overlymarketing.com/overly.svg",
+            "sameAs": [
+              "https://www.instagram.com/overlymarketing",
+              "https://www.linkedin.com/company/overlymarketing",
+              "https://www.facebook.com/overlymarketing"
+            ]
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Overly Marketing",
+            "url": "https://overlymarketing.com",
+            "publisher": {
+              "@type": "Organization",
+              "name": "Overly Marketing",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://overlymarketing.com/overly.svg"
+              }
+            },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://overlymarketing.com/?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          }),
+        }}
+      />
     </>
   );
 }

@@ -416,12 +416,14 @@ export default function GlassLens({
     }
   }, [measure]);
 
+  // Disable html2canvas capture for performance and stability.
+  // This prevents costly html2canvas capture and uses a fallback 1x1 texture instead.
+  // Re-enable the capture logic if magnification effects are desired in the future.
   useEffect(() => {
-    capture();
-    const onResize = () => capture();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [capture]);
+    // html2canvas capture disabled for performance and stability
+    console.log("[GlassLens] capture disabled; using fallback texture");
+    setTex(fallbackTex);
+  }, []);
 
   useEffect(() => {
     uniformsRef.current.uUseHover.value = enableHover ? 1 : 0;

@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useEffect, ReactNode } from "react";
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import MetaPixel from "@/components/MetaPixel";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
 
 const BackgroundFX = dynamic(() => import("@/components/BackgroundFX"), { ssr: false });
 const MusicPlayer  = dynamic(() => import("@/components/MusicPlayer"),  { ssr: false });
@@ -22,126 +24,57 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-function Splash({ ready, onEnter }: { ready: boolean; onEnter: () => void }) {
-  const [progress, setProgress] = useState(0);
-  const DURATION = 3000; // ms, keep in sync with SPLASH_MS
-
-  useEffect(() => {
-    let raf = 0;
-    const start = performance.now();
-    const tick = (t: number) => {
-      const pct = Math.min(((t - start) / DURATION) * 100, 100);
-      setProgress(pct);
-      if (pct < 100) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  const showButton = progress >= 100;
-
-  return (
-    <div className="fixed inset-0 z-[999] grid place-items-center bg-neutral-950">
-      <div className="grid place-items-center gap-5">
-        {/* White disc with spinning logo */}
-        <div className="w-32 h-32 rounded-full bg-white grid place-items-center shadow-[0_0_40px_rgba(59,130,246,0.25)]">
-          <Image
-            src="/Overly.svg"
-            alt="Overly Logo"
-            width={100}
-            height={100}
-            sizes="100px"
-            priority
-            className="select-none pointer-events-none"
-            style={{ animation: `splash-spin ${DURATION}ms linear` }}
-          />
-        </div>
-
-        {/* Progress or Enter (fixed height to prevent vertical shift) */}
-        <div className="w-44 h-10 flex items-center justify-center">
-          {!showButton ? (
-            <div aria-hidden className="w-full h-2 rounded-full bg-white/15 overflow-hidden">
-              <div
-                className="h-full bg-blue-500 rounded-full transition-[width] duration-100"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          ) : ready ? (
-            <span
-              role="button"
-              tabIndex={0}
-              onClick={onEnter}
-              className="text-blue-500 cursor-pointer hover:text-white hover:scale-105 transition-transform font-medium tracking-wide"
-            >
-              Enter
-            </span>
-          ) : (
-            <span className="text-blue-500 opacity-50 cursor-not-allowed font-medium tracking-wide">
-              Enter
-            </span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const [isSplashVisible, setSplashVisible] = useState(true);
-  const [isReady, setReady] = useState(false);
-  const [gateOpen, setGateOpen] = useState(false);
-  const ENTER_HOLD_MS = 1200; // keep splash visible this long after clicking Enter
 
-  useEffect(() => {
-    let cancelled = false;
-    const start = performance.now();
-
-    function preloadImage(src: string) {
-      return new Promise<void>((resolve) => {
-        const img = new window.Image();
-        img.onload = () => resolve();
-        img.onerror = () => resolve();
-        img.src = src;
-      });
+  const handleSkipToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const el = document.getElementById("contact");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-
-    // MIN_SPLASH_MS includes delay for gateOpen to allow background visibility before content animates in
-    const MIN_SPLASH_MS = 1200;
-    const MAX_SPLASH_MS = 5000;
-
-    const critical: Promise<unknown>[] = [
-      (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts?.ready ?? Promise.resolve(),
-      preloadImage("/Overly.svg"),
-    ];
-
-    const timeoutMax = new Promise((resolve) => setTimeout(resolve, MAX_SPLASH_MS));
-
-    Promise.race([Promise.allSettled(critical), timeoutMax]).then(async () => {
-      const elapsed = performance.now() - start;
-      const leftToMin = Math.max(0, MIN_SPLASH_MS - elapsed);
-      if (leftToMin > 0) {
-        await new Promise((r) => setTimeout(r, leftToMin));
-      }
-      if (!cancelled) setReady(true);
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  };
 
   return (
     <html lang="en" className="dark">
       <head>
+        {/* Basic SEO */}
+        <meta name="robots" content="index, follow" />
+        <meta
+          name="description"
+          content="Overly Marketing — Strategy, Social Media, Web, and Design built to convert. Get performance creative and full-funnel execution."
+        />
+        <link rel="canonical" href="https://overlymarketing.com" />
+
+        {/* Structured data for richer search results */}
+        <script
+          type="application/ld+json"
+          // Using dangerouslySetInnerHTML so this renders as raw JSON for crawlers
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Overly Marketing",
+              url: "https://overlymarketing.com",
+              logo: "https://overlymarketing.com/Overly.svg",
+              description:
+                "Social Media, Web, and Design services focused on performance and conversion.",
+            }),
+          }}
+        />
         <link rel="preload" as="image" href="/Overly.svg" />
-        <meta name="apple-mobile-web-app-title" content="Overly" />
+        <link
+          rel="preload"
+          as="font"
+          href="/_next/static/media/geist-sans-latin-var.woff2"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <meta name="apple-mobile-web-app-title" content="Overly Marketing" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
 
         {/* Recommended favicon links */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -153,21 +86,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-950 text-neutral-100 min-h-screen relative`}
       >
+        <a
+          href="#contact"
+          onClick={handleSkipToContact}
+          suppressHydrationWarning
+          className="sr-only focus:not-sr-only absolute top-4 left-4 z-[10000] rounded-md bg-blue-600 px-4 py-2 text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          Skip to contact
+        </a>
         <BackgroundFX />
-        {/* Fullscreen splash overlay while booting */}
-        {isSplashVisible && (
-          <Splash
-            ready={isReady}
-            onEnter={() => {
-              // Keep splash on-screen a bit longer for a smoother handoff
-              setTimeout(() => {
-                setSplashVisible(false);
-                // tiny idle so background is visible before content animates in
-                setTimeout(() => setGateOpen(true), 120);
-              }, ENTER_HOLD_MS);
-            }}
-          />
-        )}
         {/* SVG filters for liquid glass effects (available globally) */}
         <svg aria-hidden="true" style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}>
           {/* Stronger liquid glass (blur + turbulence + displacement) */}
@@ -194,23 +121,17 @@ export default function RootLayout({
           </filter>
         </svg>
 
+        <Header />
 
-        {/* Render header only after splash + delay */}
-        {gateOpen && <Header />}
-
-        {gateOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
-              className="will-change-transform"
-            >
-              {children}
-            </motion.div>
-            <MusicPlayer />
-          </>
-        )}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
+          className="will-change-transform"
+        >
+          {children}
+        </motion.div>
+        <MusicPlayer />
 
         <style jsx global>{`
           @keyframes splash-spin {
@@ -218,6 +139,11 @@ export default function RootLayout({
             to { transform: rotate(720deg); }
           }
         `}</style>
+
+        {/* Analytics / performance */}
+        <GoogleAnalytics />
+        <MetaPixel />
+        <SpeedInsights />
       </body>
     </html>
   );
