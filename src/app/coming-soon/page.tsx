@@ -1,16 +1,17 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
-
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function ComingSoon() {
+function ComingSoonInner() {
+  // read ?err=... from the URL
   const sp = useSearchParams();
   const err = sp.get("err");
+
+  // local UI state
   const [busy, setBusy] = useState(false);
-  const [showErr, setShowErr] = useState<boolean>(false);
+  const [showErr, setShowErr] = useState(false);
 
   useEffect(() => {
     if (err) setShowErr(true);
@@ -22,7 +23,7 @@ export default function ComingSoon() {
         <div className="text-center">
           <h1 className="text-3xl font-extrabold tracking-tight">Coming soon</h1>
           <p className="mt-2 text-sm text-neutral-400">
-            This site is in pre-launch. Please contact us at contact@overlymarketing.com or enter the access password to continue.
+            This site is in pre-launch. Enter the access password to continue.
           </p>
         </div>
 
@@ -35,8 +36,9 @@ export default function ComingSoon() {
             setShowErr(false);
           }}
         >
-          {/* optional: persisted redirect */}
-          {/* <input type="hidden" name="next" value={sp.get('next') ?? '/'} /> */}
+          {/* If you later want to redirect to original page, send ?next=... to API
+             <input type="hidden" name="next" value={sp.get('next') ?? '/'} />
+          */}
 
           <label className="block text-sm font-medium text-neutral-300">
             Access password
@@ -51,7 +53,9 @@ export default function ComingSoon() {
           </label>
 
           {showErr && (
-            <p className="text-sm text-red-400">Incorrect password. Try again.</p>
+            <p className="text-sm text-red-400">
+              Incorrect password. Try again.
+            </p>
           )}
 
           <button
@@ -68,5 +72,14 @@ export default function ComingSoon() {
         </p>
       </div>
     </main>
+  );
+}
+
+
+export default function ComingSoonPage() {
+  return (
+    <Suspense fallback={null}>
+      <ComingSoonInner />
+    </Suspense>
   );
 }
