@@ -23,7 +23,7 @@ function ComingSoonInner() {
         <div className="text-center">
           <h1 className="text-3xl font-extrabold tracking-tight">Coming soon</h1>
           <p className="mt-2 text-sm text-neutral-400">
-            This site is in pre-launch. Enter the access password to continue.
+            This site is in pre-launch. Please contact us at contact@overlymarketing.com or enter the access password to continue.
           </p>
         </div>
 
