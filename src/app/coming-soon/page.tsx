@@ -1,6 +1,7 @@
 "use client";
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,7 +22,7 @@ export default function ComingSoon() {
         <div className="text-center">
           <h1 className="text-3xl font-extrabold tracking-tight">Coming soon</h1>
           <p className="mt-2 text-sm text-neutral-400">
-            This site is in pre-launch. Enter the access password to continue.
+            This site is in pre-launch. Please contact us at contact@overlymarketing.com or enter the access password to continue.
           </p>
         </div>
 
@@ -34,7 +35,7 @@ export default function ComingSoon() {
             setShowErr(false);
           }}
         >
-          {/* If you later want to redirect to the original page, you can pass next here and read it in the API */}
+          {/* optional: persisted redirect */}
           {/* <input type="hidden" name="next" value={sp.get('next') ?? '/'} /> */}
 
           <label className="block text-sm font-medium text-neutral-300">
