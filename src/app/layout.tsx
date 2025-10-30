@@ -5,11 +5,12 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
+import CookieBanner from "@/components/CookieBanner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
 const BackgroundFX = dynamic(() => import("@/components/BackgroundFX"), { ssr: false });
 const MusicPlayer  = dynamic(() => import("@/components/MusicPlayer"),  { ssr: false });
@@ -86,6 +87,25 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-950 text-neutral-100 min-h-screen relative`}
       >
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-TV8NMW4G"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
+        {/* Google Tag Manager */}
+        <Script id="gtm" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-TV8NMW4G');`}
+        </Script>
+        {/* End Google Tag Manager */}
         <a
           href="#contact"
           onClick={handleSkipToContact}
@@ -133,6 +153,8 @@ export default function RootLayout({
         </motion.div>
         <MusicPlayer />
 
+        <CookieBanner />
+
         <style jsx global>{`
           @keyframes splash-spin {
             from { transform: rotate(0deg); }
@@ -141,7 +163,6 @@ export default function RootLayout({
         `}</style>
 
         {/* Analytics / performance */}
-        <GoogleAnalytics />
         <MetaPixel />
         <SpeedInsights />
       </body>
