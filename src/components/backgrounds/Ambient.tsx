@@ -47,6 +47,7 @@ export default function Ambient() {
       aria-hidden
     >
       {/* Mouse-reactive glow blob */}
+      {/*
       <motion.div
         className="absolute left-1/2 top-1/2 h-[52vmin] w-[52vmin] -translate-x-1/2 -translate-y-1/2 rounded-[40%] opacity-80"
         style={{
@@ -59,6 +60,7 @@ export default function Ambient() {
           willChange: "transform",
         }}
       />
+      */}
 
       {/* Ambient washes (visible on dark bg) */}
       <div className="absolute inset-0 bg-[radial-gradient(60%_70%_at_20%_10%,rgba(80,150,255,.28),transparent_60%)]" />
