@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /coming-soon
 
-Sitemap: https://www.overlymarketing.com/sitemap.xml
+Sitemap: https://overlymarketing.com/sitemap.xml

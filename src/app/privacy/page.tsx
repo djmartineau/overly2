@@ -18,7 +18,7 @@ export default function PrivacyPage() {
       <p className="text-neutral-400 max-w-3xl mb-4">
         We may collect information that you provide directly—such as your name, email, or business
         details—when you fill out a contact form or request a proposal. We may also collect
-        anonymous data through tools like Google Analytics to understand how our site is used.
+        anonymous data to understand how our site is used.
       </p>
 
       <h2 className="text-2xl font-bold mt-10 mb-2">2. How We Use Your Information</h2>
