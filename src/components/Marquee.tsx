@@ -3,25 +3,31 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 
-/** Replace with your real data later */
-const brands = ["Company 1", "Company 2", "Company 3", "Company 4", "Company 5"];
+/** Real logos placed in /public/brands */
+const brands: { name: string; src: string }[] = [
+  { name: "Arcane", src: "/brands/arcane_logo.svg" },
+  { name: "Ardent Labs", src: "/brands/ardentlabs_logo.svg" },
+  { name: "Driftline Coffee", src: "/brands/driftlinecoffee_logo.svg" },
+  { name: "F6 Safegaurd", src: "/brands/f6safegaurd_logo.svg" },
+  { name: "Flowstack", src: "/brands/flowstack_logo.svg" },
+  { name: "Sienna & Co.", src: "/brands/siennaandco_logo.svg" },
+];
 
-function BrandPill({ label }: { label: string }) {
+function BrandPill({ logo }: { logo: { name: string; src: string } }) {
   return (
     <div
-      className="group relative overflow-hidden inline-flex items-center gap-3 rounded-full border border-white/10 px-6 py-3 min-w-[160px] bg-white/5 transition-transform duration-300 hover:scale-105
-                 before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full before:skew-x-12 before:transition-transform before:duration-700 group-hover:before:translate-x-[200%]"
+      className="group relative overflow-hidden inline-flex items-center justify-center rounded-[24px] border border-white/10 h-[100px] w-[100px] p-2 bg-white/5 transition-transform duration-300 hover:z-50 hover:scale-[1.22] before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full before:skew-x-12 before:transition-transform before:duration-700 group-hover:before:translate-x-[200%]"
     >
       <Image
-        src="/globe.svg"
+        src={logo.src}
         alt=""
-        width={22}
-        height={22}
-        className="opacity-80"
+        width={140}
+        height={40}
+        className="h-[80px] w-auto object-contain opacity-30 hover:opacity-50 transition-opacity duration-300"
         priority
         aria-hidden
       />
-      <span className="text-white/90">{label}</span>
+      <span className="sr-only">{logo.name}</span>
     </div>
   );
 }
@@ -31,11 +37,8 @@ export default function Marquee() {
   const seqRef = useRef<HTMLDivElement>(null);
 
   // Speeds in px/frame (RAF ~60fps). Tune as you like.
-  const baseSpeed = 0.18;
-  const hoverSpeed = 0.05;
+  const baseSpeed = 0.6; // faster scroll
 
-  const speedRef = useRef(baseSpeed);
-  const targetSpeedRef = useRef(baseSpeed);
   const offsetRef = useRef(0);
   const seqWidthRef = useRef(0);
   const rafRef = useRef<number | null>(null);
@@ -49,7 +52,7 @@ export default function Marquee() {
     // Measure the width of ONE sequence precisely and keep it fresh on resize
     const measure = () => {
       if (!seqRef.current) return;
-      const w = seqRef.current.getBoundingClientRect().width;
+      const w = seqRef.current.scrollWidth; // ignores transform scaling of children
       seqWidthRef.current = w;
     };
     measure();
@@ -76,11 +79,8 @@ export default function Marquee() {
 
       const seqW = seqWidthRef.current;
       if (!reduceMotionRef.current && runningRef.current && seqW > 0) {
-        // ease current speed toward target
-        speedRef.current += (targetSpeedRef.current - speedRef.current) * 0.08;
-
-        // advance and wrap using modulo of single sequence width
-        offsetRef.current = (offsetRef.current - speedRef.current) % seqW;
+        // advance at a constant speed and wrap using modulo of single sequence width
+        offsetRef.current = (offsetRef.current - baseSpeed) % seqW;
 
         // Normalize negative modulo result so translate starts in [-seqW, 0)
         const x = offsetRef.current <= 0 ? offsetRef.current : offsetRef.current - seqW;
@@ -109,48 +109,41 @@ export default function Marquee() {
 
       {/* Edge fade mask so the seam is invisible */}
       <div
-        className="relative overflow-hidden"
-        style={{
-          WebkitMaskImage:
-            "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
-          maskImage:
-            "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
-        }}
-        onMouseEnter={() => (targetSpeedRef.current = hoverSpeed)}
-        onMouseLeave={() => (targetSpeedRef.current = baseSpeed)}
+        className="relative overflow-visible py-2 isolate"
       >
         {/* We translate this whole track. It contains 3 sequences:
             [A][A][A] so wrapping by the width of ONE [A] is seamless. */}
         <div
           ref={trackRef}
-          className="flex whitespace-nowrap gap-12 will-change-transform select-none"
+          className="flex whitespace-nowrap gap-14 will-change-transform select-none z-0"
           style={{ transform: "translate3d(0,0,0)" }}
           aria-hidden
         >
           {/* ONE canonical sequence to measure */}
-          <div ref={seqRef} className="flex whitespace-nowrap gap-12">
+          <div ref={seqRef} className="flex whitespace-nowrap gap-14 contain-content">
             {brands.map((b, i) => (
-              <BrandPill key={`a-${i}`} label={b} />
+              <BrandPill key={`a-${i}`} logo={b} />
             ))}
           </div>
 
           {/* Two additional clones ensure coverage during wrap */}
-          <div className="flex whitespace-nowrap gap-12" aria-hidden>
+          <div className="flex whitespace-nowrap gap-14" aria-hidden>
             {brands.map((b, i) => (
-              <BrandPill key={`b-${i}`} label={b} />
+              <BrandPill key={`b-${i}`} logo={b} />
             ))}
           </div>
-          <div className="flex whitespace-nowrap gap-12" aria-hidden>
+          <div className="flex whitespace-nowrap gap-14" aria-hidden>
             {brands.map((b, i) => (
-              <BrandPill key={`c-${i}`} label={b} />
+              <BrandPill key={`c-${i}`} logo={b} />
             ))}
           </div>
         </div>
+
+        {/* Edge fades as overlays (not masks) so hover can escape clipping */}
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-neutral-950 to-transparent z-10" />
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-neutral-950 to-transparent z-10" />
       </div>
 
-      <div className="text-xs text-center mt-6 text-white/40">
-        (Demo brands for now — replace with client logos or names)
-      </div>
     </section>
   );
 }

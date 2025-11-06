@@ -52,6 +52,11 @@ export default function ProcessSection() {
   const railRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
+  const activeRef = useRef(active);
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
+
   const makeSectionRef = (index: number): React.RefCallback<HTMLDivElement> => {
     return (el: HTMLDivElement | null) => {
       sectionsRef.current[index] = el;
@@ -59,22 +64,48 @@ export default function ProcessSection() {
   };
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // pick the most visible section
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target instanceof HTMLElement) {
-          const id = visible.target.getAttribute("data-id");
-          if (id) setActive(id);
+    const getCurrent = () => {
+      const mid = window.innerHeight * 0.5;
+      let winner: string | null = null;
+      let closestDist = Number.POSITIVE_INFINITY;
+      sectionsRef.current.forEach((el, i) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        // Inside the midpoint band?
+        if (r.top <= mid && r.bottom >= mid) {
+          winner = STEPS[i].id;
+          closestDist = 0;
+        } else {
+          // distance from section center to viewport midpoint
+          const center = r.top + r.height / 2;
+          const dist = Math.abs(center - mid);
+          if (dist < closestDist) {
+            closestDist = dist;
+            winner = STEPS[i].id;
+          }
         }
-      },
-      { root: null, rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.33, 0.66, 1] }
-    );
+      });
+      if (winner && winner !== activeRef.current) setActive(winner);
+    };
 
-    sectionsRef.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        getCurrent();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    // initial compute
+    getCurrent();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   // progress fill (based on which step is active)
@@ -82,7 +113,7 @@ export default function ProcessSection() {
 
   return (
     <section id="process" className="relative w-full">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 md:grid-cols-[280px_1fr]">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:grid-cols-[220px_1fr] md:grid-cols-[280px_1fr]">
         {/* Sticky left rail */}
         <aside className="relative">
           <div className="sticky top-24">

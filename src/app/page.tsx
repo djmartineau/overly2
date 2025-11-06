@@ -13,6 +13,7 @@ import ContactCTA from "@/components/ContactCTA";
 import Capabilities from "@/components/Capabilities";
 import Testimonials from "@/components/Testimonials";
 import ProcessSection from "@/components/ProcessSection";
+import About from "@/components/About";
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
@@ -42,6 +43,9 @@ export default function Home() {
       </motion.section>
       <motion.section id="marquee" variants={itemVariants} transition={{ delay: 0.4 }}>
         <Marquee />
+      </motion.section>
+      <motion.section id="about" variants={itemVariants} transition={{ delay: 0.4 }}>
+        <About />
       </motion.section>
       <motion.section id="process" variants={itemVariants} transition={{ delay: 0.6 }}>
         <ProcessSection />
