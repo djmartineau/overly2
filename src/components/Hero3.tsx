@@ -1,4 +1,3 @@
-// src/components/Hero3.tsx
 "use client";
 
 import Image from "next/image";
@@ -7,6 +6,9 @@ import { Playfair_Display } from "next/font/google";
 import HeroWord3 from "./HeroWord3";
 import Button from "./Button";
 import BackgroundSwitcher, { type BgVariant } from "@/components/backgrounds/Switcher";
+import { useState } from "react";
+import SlideOver from "@/components/SlideOver";
+import ContactForm from "@/components/ContactForm";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -20,6 +22,8 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const BG_VARIANT: BgVariant = "ambient";
 
 export default function Hero3() {
+  const [contactOpen, setContactOpen] = useState(false);
+
   return (
     <section className="relative isolate w-full">
       {/* Background */}
@@ -63,7 +67,7 @@ export default function Hero3() {
 
           {/* CTAs */}
           <div className="mt-8 flex items-center justify-center gap-5">
-            <Button onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}>
+            <Button onClick={() => setContactOpen(true)}>
               Work with us
             </Button>
             <button
@@ -75,6 +79,9 @@ export default function Hero3() {
           </div>
         </motion.div>
       </div>
+      <SlideOver open={contactOpen} onClose={() => setContactOpen(false)} title="Start a project">
+        <ContactForm />
+      </SlideOver>
     </section>
   );
 }

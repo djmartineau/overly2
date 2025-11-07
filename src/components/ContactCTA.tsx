@@ -1,6 +1,11 @@
 import Section from "@/components/Section";
+import SlideOver from "@/components/SlideOver";
+import ContactForm from "@/components/ContactForm";
+import { useState } from "react";
 
 export default function ContactCTA() {
+  const [contactOpen, setContactOpen] = useState(false);
+
   return (
     <Section id="contact">
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-500/10 via-fuchsia-500/10 to-transparent p-10 ring-1 ring-white/10">
@@ -9,13 +14,17 @@ export default function ContactCTA() {
         <p className="mt-3 max-w-xl text-white/70">
           Tell us where you want to win. We’ll build the system that gets you there.
         </p>
-        <a
-          href="mailto:contact@overlymarketing.com"
+        <button
+          onClick={() => setContactOpen(true)}
           className="mt-6 inline-flex rounded-full bg-blue-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-400 transition"
         >
           Start a project
-        </a>
+        </button>
       </div>
+
+      <SlideOver open={contactOpen} onClose={() => setContactOpen(false)} title="Start a project">
+        <ContactForm />
+      </SlideOver>
     </Section>
   );
 }
