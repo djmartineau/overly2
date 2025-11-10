@@ -18,7 +18,8 @@ declare global {
           "error-callback"?: () => void;
           "expired-callback"?: () => void;
         }
-      ) => void;
+      ) => string; // returns widget id
+      reset: (id?: string) => void; // optional widget id
     };
     __tsOnLoad?: () => void;
   }
@@ -47,6 +48,7 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }){
   } = useForm<FormData>({ resolver: zodResolver(Schema) });
 
   const widgetRef = useRef<HTMLDivElement | null>(null);
+  const widgetIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
@@ -57,7 +59,16 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }){
 
     const render = () => {
       if (!widgetRef.current || !window.turnstile) return;
-      window.turnstile.render(widgetRef.current, {
+
+      // If there was a previous instance, reset it
+      try {
+        if (widgetIdRef.current && window.turnstile) {
+          window.turnstile.reset(widgetIdRef.current!);
+        }
+      } catch {}
+
+      // Render explicitly and keep the widget id so we can reset on demand
+      const id: string = window.turnstile.render(widgetRef.current, {
         sitekey: siteKey,
         theme: "dark",
         callback: (token: string) => {
@@ -73,11 +84,16 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }){
           setError("cfToken", { type: "validate", message: "Verification expired. Please retry." });
         },
       });
+
+      widgetIdRef.current = id;
     };
 
     if (typeof window !== "undefined" && window.turnstile) render();
     window.__tsOnLoad = render;
-    return () => { if (typeof window !== "undefined") window.__tsOnLoad = undefined; };
+
+    return () => {
+      if (typeof window !== "undefined") window.__tsOnLoad = undefined;
+    };
   }, [setValue, setError, clearErrors]);
 
   const onSubmit = async (data: FormData) => {
@@ -112,7 +128,7 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }){
   return (
     <>
       <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__tsOnLoad"
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__tsOnLoad&render=explicit"
         strategy="afterInteractive"
       />
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -174,7 +190,20 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }){
         <div ref={widgetRef} className="mt-2" />
         {errors.cfToken && (
           <p className="text-sm text-red-400 mt-1" aria-live="polite">
-            {errors.cfToken.message}
+            {errors.cfToken.message}{" "}
+            <button
+              type="button"
+              onClick={() => {
+                try {
+                  if (widgetIdRef.current && window.turnstile) {
+                    window.turnstile.reset(widgetIdRef.current!);
+                  }
+                } catch {}
+              }}
+              className="underline underline-offset-2 hover:opacity-80"
+            >
+              Retry verification
+            </button>
           </p>
         )}
 
