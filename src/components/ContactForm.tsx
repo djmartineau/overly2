@@ -29,7 +29,7 @@ const Schema = z.object({
   name: z.string().min(2, "Please enter your name"),
   email: z.string().email("Enter a valid email"),
   company: z.string().optional(),
-  budget: z.enum(["starter","core","custom"]).optional(),
+  projectScale: z.string().optional(),
   message: z.string().min(10, "Give us a little more context"),
   // Turnstile token
   cfToken: z.string().min(1, "Captcha failed"),
@@ -101,12 +101,13 @@ export default function ContactForm() {
           <input {...register("company")} className="mt-1 w-full rounded-md bg-white/5 px-3 py-2 text-white ring-1 ring-white/10 focus:outline-none focus:ring-blue-500" />
         </div>
         <div>
-          <label className="block text-sm text-white/70">Budget (rough)</label>
-          <select {...register("budget")} className="mt-1 w-full rounded-md bg-white/5 px-3 py-2 text-white ring-1 ring-white/10 focus:outline-none focus:ring-blue-500">
-            <option value="">Select…</option>
-            <option value="starter">Starter (WordPress / rapid)</option>
-            <option value="core">Core (hybrid)</option>
-            <option value="custom">Custom (Next.js / headless)</option>
+          <label className="block text-sm text-white/70">Project scale</label>
+          <select {...register("projectScale")} className="mt-1 w-full rounded-md bg-white/5 px-3 py-2 text-white ring-1 ring-white/10 focus:outline-none focus:ring-blue-500">
+            <option value="">Choose one (optional)</option>
+            <option value="Starter">Starter — a focused single project</option>
+            <option value="Plus">Plus — multi-service collaboration</option>
+            <option value="Comprehensive">Comprehensive — brand-wide or long-term strategy</option>
+            <option value="Not sure">Not sure — let’s talk through it</option>
           </select>
         </div>
       </div>
