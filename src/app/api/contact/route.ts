@@ -7,6 +7,9 @@ const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD; // Gmail App Password
 const LEADS_TO = process.env.LEADS_TO || GMAIL_USER;       // where to receive leads
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;   // optional
 
+const BRAND_FROM_NAME = process.env.BRAND_FROM_NAME || "Overly Marketing Group"; // public-facing brand
+const INTERNAL_FROM_NAME = process.env.INTERNAL_FROM_NAME || "Overly Leads";    // internal lead sender name
+
 async function verifyTurnstile(token: string) {
   if (!TURNSTILE_SECRET) return false;
   const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
@@ -23,7 +26,7 @@ async function sendEmail(payload: {
 }) {
   if (!GMAIL_USER || !GMAIL_APP_PASSWORD || !LEADS_TO) return;
 
-  const fromName = process.env.BRAND_FROM_NAME || "Overly Leads";
+  const fromName = INTERNAL_FROM_NAME;
   const recipients = (LEADS_TO || "")
     .split(",")
     .map((s) => s.trim())
@@ -36,7 +39,7 @@ async function sendEmail(payload: {
   });
 
   const html = `
-    <h2>New Overly Contact</h2>
+    <h2>New Overly Marketing Group Contact</h2>
     <p><strong>Name:</strong> ${payload.name}</p>
     <p><strong>Email:</strong> ${payload.email}</p>
     <p><strong>Company:</strong> ${payload.company || "—"}</p>
@@ -50,7 +53,7 @@ async function sendEmail(payload: {
     replyTo: `${payload.name} <${payload.email}>`,
     subject: `New lead from ${payload.name}`,
     html,
-    text: `New Overly Contact
+    text: `New Overly Marketing Group Contact
 
 Name: ${payload.name}
 Email: ${payload.email}
@@ -87,7 +90,7 @@ async function sendSlack(payload: { name: string; email: string; company?: strin
 async function sendAutoReply(toEmail: string, name?: string) {
   if (!GMAIL_USER || !GMAIL_APP_PASSWORD || !toEmail) return;
 
-  const brand = process.env.BRAND_FROM_NAME || "Overly";
+  const brand = BRAND_FROM_NAME;
 
   const html = `
     <div style="font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif; background:#ffffff; padding:32px; color:#111; line-height:1.6;">
