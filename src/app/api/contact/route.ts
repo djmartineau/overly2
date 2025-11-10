@@ -84,6 +84,55 @@ async function sendSlack(payload: { name: string; email: string; company?: strin
   });
 }
 
+async function sendAutoReply(toEmail: string, name?: string) {
+  if (!GMAIL_USER || !GMAIL_APP_PASSWORD || !toEmail) return;
+
+  const brand = process.env.BRAND_FROM_NAME || "Overly";
+
+  const html = `
+    <div style="font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif; background:#ffffff; padding:32px; color:#111; line-height:1.6;">
+      <h2 style="margin:0 0 16px; font-size:20px; font-weight:600;">Thanks — we received your message 👋</h2>
+      <p style="margin:0 0 16px; font-size:15px;">
+        Hi${name ? ` ${name}` : ""},<br/>
+        Thanks for reaching out. Your message is in our system and someone from our team will get back to you shortly.
+      </p>
+      <p style="margin:0 0 24px; font-size:15px;">
+        If this is time-sensitive, feel free to reply directly to this email with any additional details.
+      </p>
+      <hr style="border:none; border-top:1px solid #e5e5e5; margin:24px 0;"/>
+      <p style="margin:0; font-size:13px; color:#555;">
+        ${brand} — Digital-first creative &amp; marketing<br/>
+        overlymarketing.com
+      </p>
+    </div>
+  `;
+
+  const text =
+`Thanks — we received your message!
+
+Hi${name ? ` ${name}` : ""},
+Your message is in our system and someone from our team will get back to you shortly.
+
+If this is time-sensitive, just reply to this email with more details.
+
+${brand} — Digital-first creative & marketing
+overlymarketing.com`;
+
+  const nodemailer = await import("nodemailer");
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD },
+  });
+
+  await transporter.sendMail({
+    to: toEmail,
+    from: `"${brand}" <${GMAIL_USER}>`,
+    subject: "Thanks — we received your message",
+    html,
+    text,
+  });
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -110,6 +159,8 @@ export async function POST(req: Request) {
       sendEmail({ name, email, company, projectScale, message }),
       sendSlack({ name, email, company, projectScale, message }),
     ]);
+
+    await sendAutoReply(email, name);
 
     return NextResponse.json({ ok: true });
   } catch (e) {
