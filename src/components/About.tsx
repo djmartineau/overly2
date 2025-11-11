@@ -9,7 +9,7 @@ export default function About() {
           Our Approach
         </h2>
         <h3 className="text-3xl md:text-4xl font-semibold mb-8">
-          Strategy meets style. Execution meets obsession.
+          A partner invested in your long-term momentum.
         </h3>
 
         <p className="text-white/70 max-w-3xl mb-16">

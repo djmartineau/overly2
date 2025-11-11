@@ -71,7 +71,7 @@ export default function Hero3() {
               Work with us
             </Button>
             <button
-              onClick={() => document.querySelector("#work")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => document.querySelector("#marquee")?.scrollIntoView({ behavior: "smooth" })}
               className="flex items-center gap-1 text-blue-400 hover:text-blue-300 font-medium transition-colors"
             >
               <span>★</span> See our work

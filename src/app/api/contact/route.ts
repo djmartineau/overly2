@@ -104,7 +104,7 @@ async function sendAutoReply(toEmail: string, name?: string) {
       </p>
       <hr style="border:none; border-top:1px solid #e5e5e5; margin:24px 0;"/>
       <p style="margin:0; font-size:13px; color:#555;">
-        ${brand} — Digital-first creative &amp; marketing<br/>
+        Overly Marketing Group — Digital-first creative &amp; marketing<br/>
         overlymarketing.com
       </p>
     </div>
@@ -118,7 +118,7 @@ Your message is in our system and someone from our team will get back to you sho
 
 If this is time-sensitive, just reply to this email with more details.
 
-${brand} — Digital-first creative & marketing
+Overly Marketing Group — Digital-first creative & marketing
 overlymarketing.com`;
 
   const nodemailer = await import("nodemailer");
