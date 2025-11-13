@@ -62,62 +62,70 @@ export default function Header() {
     <>
       <header className="fixed top-4 inset-x-0 z-[9999] flex justify-center pointer-events-none h-16">
         <div
-          className="relative pointer-events-auto rounded-full px-6 bg-white/10 ring-1 ring-white/20 shadow-[0_8px_24px_rgba(2,6,23,0.25)] overflow-hidden h-16 flex items-center"
+          className="relative pointer-events-auto"
           style={{ width: "min(92vw, 1000px)" }}
         >
-          {/* WebGL lens behind the nav content */}
-          <GlassLens enableHover={motionOK} enableRipple={motionOK} magnify={2.6} />
+          <a
+            href="mailto:contact@overlymarketing.com"
+            className="absolute -top-5 right-6 text-xs font-medium text-slate-200 opacity-30 pointer-events-auto hover:opacity-100 transition"
+          >
+            contact@overlymarketing.com
+          </a>
+          <div className="rounded-full px-6 bg-white/10 ring-1 ring-white/20 shadow-[0_8px_24px_rgba(2,6,23,0.25)] overflow-hidden h-16 flex items-center">
+            {/* WebGL lens behind the nav content */}
+            <GlassLens enableHover={motionOK} enableRipple={motionOK} magnify={2.6} />
 
-          {/* Nav content above the lens */}
-          <div className="relative z-10 w-full">
-            <div className="flex h-full w-full items-center justify-between gap-4 sm:gap-8">
-              <div className="flex items-center">
-                <Link href="/" className="inline-flex items-center" aria-label="Overly">
-                  <Image
-                    src="/overlylogo.svg"
-                    alt="Overly logo"
-                    width={110}
-                    height={40}
-                    className="invert block"
-                    priority
-                  />
-                </Link>
+            {/* Nav content above the lens */}
+            <div className="relative z-10 w-full">
+              <div className="flex h-full w-full items-center justify-between gap-4 sm:gap-8">
+                <div className="flex items-center">
+                  <Link href="/" className="inline-flex items-center" aria-label="Overly">
+                    <Image
+                      src="/overlylogo.svg"
+                      alt="Overly logo"
+                      width={110}
+                      height={40}
+                      className="invert block"
+                      priority
+                    />
+                  </Link>
+                </div>
+                <nav
+                  role="navigation"
+                  aria-label="Primary"
+                  className="flex items-center gap-6 sm:gap-8 text-sm leading-none"
+                >
+                  <Link
+                    className="text-blue-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded font-medium transition-transform hover:scale-110"
+                    href="/#marquee"
+                    onClick={handleNav("marquee")}
+                  >
+                    Work
+                  </Link>
+                  <Link
+                    className="text-blue-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded font-medium transition-transform hover:scale-110"
+                    href="/#capabilities"
+                    onClick={handleNav("capabilities")}
+                  >
+                    Services
+                  </Link>
+                  <Link
+                    className="text-blue-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded font-medium transition-transform hover:scale-110"
+                    href="/#strategy"
+                    onClick={handleNav("strategy")}
+                  >
+                    About
+                  </Link>
+                  <Link
+                    className="text-blue-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded font-medium transition-transform hover:scale-110"
+                    href="/#contact"
+                    onClick={handleContact}
+                    aria-label="Contact"
+                  >
+                    Contact
+                  </Link>
+                </nav>
               </div>
-              <nav
-                role="navigation"
-                aria-label="Primary"
-                className="flex items-center gap-6 sm:gap-8 text-sm leading-none"
-              >
-                <Link
-                  className="text-blue-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded font-medium transition-transform hover:scale-110"
-                  href="/#marquee"
-                  onClick={handleNav("marquee")}
-                >
-                  Work
-                </Link>
-                <Link
-                  className="text-blue-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded font-medium transition-transform hover:scale-110"
-                  href="/#capabilities"
-                  onClick={handleNav("capabilities")}
-                >
-                  Services
-                </Link>
-                <Link
-                  className="text-blue-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded font-medium transition-transform hover:scale-110"
-                  href="/#strategy"
-                  onClick={handleNav("strategy")}
-                >
-                  About
-                </Link>
-                <Link
-                  className="text-blue-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 rounded font-medium transition-transform hover:scale-110"
-                  href="/#contact"
-                  onClick={handleContact}
-                  aria-label="Contact"
-                >
-                  Contact
-                </Link>
-              </nav>
             </div>
           </div>
         </div>
