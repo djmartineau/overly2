@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion, useInView } from "framer-motion";
 import Section from "./Section";
 
 const STRATEGY = [
@@ -183,6 +183,8 @@ function ExecStack({ scrollYProgress, total, strategyCount }: { scrollYProgress:
 
 export default function ProcessExperience() {
   const ref = useRef<HTMLDivElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
+  const introInView = useInView(introRef, { margin: "-20% 0px" });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end 0.9"] });
   const progressW = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
@@ -196,6 +198,17 @@ export default function ProcessExperience() {
 
   return (
     <Section id="process" className="py-32">
+      <motion.div
+        ref={introRef}
+        className="mx-auto max-w-4xl px-6 mb-10 text-center"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: introInView ? 1 : 0, y: introInView ? 0 : 10 }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <p className="text-sm sm:text-base text-zinc-400">
+          Scroll through our strategies and how we execute them.
+        </p>
+      </motion.div>
       <div ref={ref} className="relative">
         {/* Sticky header + progress */}
         <div className="sticky top-[84px] z-30 mb-12 bg-neutral-950/60 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/40">

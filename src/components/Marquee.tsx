@@ -15,15 +15,13 @@ const brands: { name: string; src: string }[] = [
 
 function BrandPill({ logo }: { logo: { name: string; src: string } }) {
   return (
-    <div
-      className="group relative overflow-hidden inline-flex items-center justify-center rounded-[24px] border border-white/10 h-[100px] w-[100px] p-2 bg-white/5 transition-transform duration-300 hover:z-50 hover:scale-[1.22] before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full before:skew-x-12 before:transition-transform before:duration-700 group-hover:before:translate-x-[200%]"
-    >
+    <div className="inline-flex items-center justify-center h-[60px] w-[60px]">
       <Image
         src={logo.src}
         alt=""
         width={140}
         height={40}
-        className="h-[80px] w-auto object-contain opacity-30 hover:opacity-50 transition-opacity duration-300"
+        className="h-[60px] w-auto object-contain opacity-30 transition-opacity duration-300"
         priority
         aria-hidden
       />
@@ -102,7 +100,7 @@ export default function Marquee() {
   }, []);
 
   return (
-    <section className="relative py-12 bg-neutral-950 text-white">
+    <section className="relative py-8 sm:py-10 bg-neutral-950 text-white">
       <div className="text-sm uppercase tracking-[.2em] text-white/50 text-center mb-6">
         Brands we’ve elevated
       </div>

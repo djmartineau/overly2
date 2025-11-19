@@ -11,8 +11,8 @@ import MetaPixel from "@/components/MetaPixel";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { metadata as appMetadata } from "./metadata";
 
-const BackgroundFX = dynamic(() => import("@/components/BackgroundFX"), { ssr: false });
 const MusicPlayer  = dynamic(() => import("@/components/MusicPlayer"),  { ssr: false });
 
 const geistSans = Geist({
@@ -31,6 +31,11 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
 
+  const resolvedTitle =
+    typeof appMetadata.title === "string"
+      ? appMetadata.title
+      : appMetadata.title?.default ?? "Overly Marketing Group | Digital Marketing Agency";
+
   const handleSkipToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const el = document.getElementById("contact");
@@ -43,10 +48,16 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         {/* Basic SEO */}
+        <title>
+          {resolvedTitle}
+        </title>
         <meta name="robots" content="index, follow" />
         <meta
           name="description"
-          content="Overly Marketing — Strategy, Social Media, Web, and Design built to convert. Get performance creative and full-funnel execution."
+          content={
+            appMetadata.description ??
+            "Strategy and design for web, social media, and ads - built to convert"
+          }
         />
         <link rel="canonical" href="https://overlymarketing.com" />
 
@@ -114,7 +125,6 @@ export default function RootLayout({
         >
           Skip to contact
         </a>
-        <BackgroundFX />
         {/* SVG filters for liquid glass effects (available globally) */}
         <svg aria-hidden="true" style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}>
           {/* Stronger liquid glass (blur + turbulence + displacement) */}

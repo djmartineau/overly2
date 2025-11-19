@@ -60,7 +60,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-4 inset-x-0 z-[9999] flex justify-center pointer-events-none h-16">
+      <header className="fixed top-6 inset-x-0 z-[9999] flex justify-center pointer-events-none h-16">
         <div
           className="relative pointer-events-auto"
           style={{ width: "min(92vw, 1000px)" }}

@@ -8,8 +8,8 @@ export default function ContactCTA() {
 
   return (
     <Section id="contact">
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-500/10 via-fuchsia-500/10 to-transparent p-10 ring-1 ring-white/10">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(600px_200px_at_80%_20%,rgba(99,102,241,.25),transparent)]" />
+      <div className="relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl p-10 ring-1 ring-white/10 border border-white/10">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(140deg,rgba(90,110,255,0.12),rgba(150,90,255,0.10),rgba(0,0,0,0))] opacity-70" />
         <h3 className="text-2xl md:text-3xl font-bold">Let’s make something overly effective.</h3>
         <p className="mt-3 max-w-xl text-white/70">
           Tell us where you want to win. We’ll build the system that gets you there.

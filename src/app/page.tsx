@@ -10,6 +10,8 @@ import ContactCTA from "@/components/ContactCTA";
 import Capabilities from "@/components/Capabilities";
 import ProcessSection from "@/components/ProcessSection";
 import About from "@/components/About";
+import PlatformsSection from "@/components/PlatformsSection";
+import SocialDistributionSection from "@/components/SocialDistributionSection";
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
@@ -34,9 +36,18 @@ export default function Home() {
       initial="hidden"
       animate="show"
     >
-      <motion.section id="top" variants={itemVariants} transition={{ delay: 0.0 }}>
-        <Hero3 />
+      {/* Hero section: stays at the top while the rest of the site scrolls over it */}
+      <motion.section
+        id="top"
+        variants={itemVariants}
+        transition={{ delay: 0.0 }}
+        className="relative min-h-screen"
+      >
+        <div className="sticky top-0 h-screen">
+          <Hero3 />
+        </div>
       </motion.section>
+
       <motion.section id="marquee" variants={itemVariants} transition={{ delay: 0.4 }}>
         <Marquee />
       </motion.section>
@@ -46,10 +57,21 @@ export default function Home() {
       <motion.section id="process" variants={itemVariants} transition={{ delay: 0.6 }}>
         <ProcessSection />
       </motion.section>
+      <motion.section id="platforms" variants={itemVariants} transition={{ delay: 0.75 }}>
+        <PlatformsSection />
+      </motion.section>
       <motion.section id="services" variants={itemVariants} transition={{ delay: 0.9 }}>
         <Capabilities />
       </motion.section>
-      <motion.section id="strategy" variants={itemVariants} transition={{ delay: 1.2 }}>
+      <motion.section id="social-network" variants={itemVariants} transition={{ delay: 1.05 }}>
+        <SocialDistributionSection />
+      </motion.section>
+      <motion.section
+        id="strategy"
+        variants={itemVariants}
+        transition={{ delay: 1.2 }}
+        className="-mt-8"
+      >
         <ProcessExperience />
       </motion.section>
       <motion.section id="contact" variants={itemVariants} transition={{ delay: 1.8 }}>

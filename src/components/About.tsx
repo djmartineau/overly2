@@ -9,7 +9,19 @@ export default function About() {
           Our Approach
         </h2>
         <h3 className="text-3xl md:text-4xl font-semibold mb-8">
-          A partner invested in your long-term momentum.
+          A partner invested in your{" "}
+          <span
+            className="inline-block"
+            style={{
+              backgroundImage: "linear-gradient(90deg, #3b82f6, #a855f7)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+            }}
+          >
+            long-term momentum
+          </span>
+          .
         </h3>
 
         <p className="text-white/70 max-w-3xl mb-16">

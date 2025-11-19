@@ -32,7 +32,7 @@ export default function Hero3() {
       {/* Centered content container */}
       <div className="relative z-10 mx-auto max-w-7xl px-4">
         <motion.div
-          className="relative z-10 flex min-h-[100vh] flex-col items-center justify-center gap-3 text-center"
+          className="relative z-10 flex min-h-[100vh] flex-col items-center justify-center gap-3 text-center pt-16 md:pt-20"
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } }}
         >

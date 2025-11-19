@@ -1,18 +1,19 @@
 // src/components/BackgroundFX.tsx
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 
-export default function BackgroundFX() {
+export default function BackgroundFX({ progress }: { progress?: MotionValue<number> }) {
   const { scrollYProgress } = useScroll();
+  const source = progress ?? scrollYProgress;
 
   // subtle opacity choreography across the page
-  const glow1Opacity = useTransform(scrollYProgress, [0.00, 0.25, 0.50], [0.6, 0.4, 0.2]);
-  const glow2Opacity = useTransform(scrollYProgress, [0.30, 0.60, 1.00], [0.0, 0.5, 0.3]);
-  const vignetteOpacity = useTransform(scrollYProgress, [0, 1], [0.35, 0.45]);
+  const glow1Opacity = useTransform(source, [0.00, 0.25, 0.50], [0.6, 0.4, 0.2]);
+  const glow2Opacity = useTransform(source, [0.30, 0.60, 1.00], [0.0, 0.5, 0.3]);
+  const vignetteOpacity = useTransform(source, [0, 1], [0.35, 0.45]);
 
   const overallOpacity = useTransform(
-    scrollYProgress,
+    source,
     [0, 0.22, 0.35],
     [1, 1, 0]
   );
