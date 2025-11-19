@@ -34,7 +34,7 @@ export default function RootLayout({
   const resolvedTitle =
     typeof appMetadata.title === "string"
       ? appMetadata.title
-      : appMetadata.title?.default ?? "Overly Marketing Group | Digital Marketing Agency";
+      : "Overly Marketing Group | Marketing Built to Convert";
 
   const handleSkipToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
