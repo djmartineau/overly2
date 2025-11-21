@@ -5,6 +5,14 @@ import Image from "next/image";
 
 /** Real logos placed in /public/brands */
 const brands: { name: string; src: string }[] = [
+  { name: "Aura", src: "/brands/aura_logo.svg" },
+  { name: "Benji Box", src: "/brands/benjibox_logo.svg" },
+  { name: "Early Hour", src: "/brands/earlyhour_logo.svg" },
+  { name: "Hopper", src: "/brands/hopper_logo.svg" },
+  { name: "Klyro", src: "/brands/klyro_logo.svg" },
+  { name: "Koba", src: "/brands/koba_logo.svg" },
+  { name: "Le Petite Cafe", src: "/brands/lepetitecafe_logo.svg" },
+  { name: "Redwood Supply", src: "/brands/redwoodsupply_logo.svg" },
   { name: "Arcane", src: "/brands/arcane_logo.svg" },
   { name: "Ardent Labs", src: "/brands/ardentlabs_logo.svg" },
   { name: "Driftline Coffee", src: "/brands/driftlinecoffee_logo.svg" },
