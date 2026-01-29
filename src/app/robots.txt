@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /coming-soon
-
-Sitemap: https://overlymarketing.com/sitemap.xml
