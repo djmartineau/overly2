@@ -4,8 +4,8 @@ import type { NextRequest } from "next/server";
 const COOKIE_NAME = process.env.SITE_COOKIE_NAME || "overly_access";
 const COOKIE_VAL  = process.env.SITE_COOKIE_VALUE || "granted";
 
-// Toggle the gate via env: SITE_LOCK=on | off (default on)
-const SITE_LOCK = (process.env.SITE_LOCK || "on") === "on";
+// Toggle the gate via env: SITE_LOCK=on | off (default off so site is public)
+const SITE_LOCK = (process.env.SITE_LOCK || "off") === "on";
 
 // Paths that anyone can visit
 const PUBLIC_PATHS = new Set([

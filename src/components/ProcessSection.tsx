@@ -15,7 +15,7 @@ const STEPS: Step[] = [
   {
     id: "discover",
     title: "Discover",
-    summary: "We align on goals, audience, and success metrics. No fluff—just clarity.",
+    summary: "We align on goals, audience, and success metrics.",
     icon: <Target className="h-5 w-5" />,
   },
   {
@@ -113,15 +113,23 @@ export default function ProcessSection() {
 
   return (
     <section id="process" className="relative w-full">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:grid-cols-[220px_1fr] md:grid-cols-[280px_1fr]">
+      {/* Mobile-only heading */}
+      <div className="mx-auto mb-6 max-w-7xl px-4 sm:hidden">
+        <h2 className="text-2xl font-semibold text-white">Our process</h2>
+        <p className="mt-2 text-sm text-neutral-400">
+          Transparent, iterative, and built to convert.
+        </p>
+      </div>
+      <div className="mx-auto grid max-w-7xl grid-cols-[48px_1fr] gap-10 px-4 sm:grid-cols-[220px_1fr] md:grid-cols-[280px_1fr]">
         {/* Sticky left rail */}
         <aside className="relative">
           <div className="sticky top-24">
-            <h2 className="text-2xl font-semibold text-white">Our process</h2>
-            <p className="mt-2 text-sm text-neutral-400">
-              Transparent, iterative, and built to convert.
-            </p>
-
+            <div className="hidden sm:block">
+              <h2 className="text-2xl font-semibold text-white">Our process</h2>
+              <p className="mt-2 text-sm text-neutral-400">
+                Transparent, iterative, and built to convert.
+              </p>
+            </div>
             <div className="relative mt-6">
               {/* Rail background */}
               <div className="absolute left-[10px] top-0 h-full w-[2px] bg-white/10" aria-hidden />
@@ -160,7 +168,9 @@ export default function ProcessSection() {
                           <span className={`rounded-md p-1.5 ring-1 ring-white/10 ${isActive ? "bg-white/10" : "bg-white/5"}`}>
                             {s.icon}
                           </span>
-                          <span className="font-medium">{s.title}</span>
+                          <span className="hidden text-sm font-medium sm:inline">
+                            {s.title}
+                          </span>
                         </div>
                       </button>
                     </li>
@@ -200,7 +210,7 @@ export default function ProcessSection() {
                 <ul className="mt-4 grid gap-2 text-sm text-neutral-400 sm:grid-cols-2">
                   {i === 0 && (
                     <>
-                      <li>• Stakeholder intake & goals</li>
+                      <li>• Client intake & goals</li>
                       <li>• Audience & positioning</li>
                       <li>• Competitive scan</li>
                       <li>• Success metrics</li>
@@ -224,7 +234,7 @@ export default function ProcessSection() {
                   )}
                   {i === 3 && (
                     <>
-                      <li>• Next.js + Tailwind</li>
+                      <li>• Custom code, Wordpress, and Shopify sites</li>
                       <li>• CMS / data hookups</li>
                       <li>• Performance & SEO</li>
                       <li>• QA & accessibility</li>
@@ -250,7 +260,7 @@ export default function ProcessSection() {
             </p>
             <a
               href="#contact"
-              className="rounded-full bg-blue-500 px-5 py-2.5 font-medium text-white shadow hover:bg-blue-400 transition"
+              className="rounded-full bg-blue-600 px-5 py-2.5 font-medium text-white shadow hover:bg-blue-700 transition"
             >
               Book a call
             </a>

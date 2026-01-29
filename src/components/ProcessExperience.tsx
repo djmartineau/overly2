@@ -205,7 +205,7 @@ export default function ProcessExperience() {
         animate={{ opacity: introInView ? 1 : 0, y: introInView ? 0 : 10 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       >
-        <p className="text-sm sm:text-base text-zinc-400">
+        <p className="text-sm sm:text-base text-zinc-700">
           Scroll through our strategies and how we execute them.
         </p>
       </motion.div>
@@ -218,7 +218,7 @@ export default function ProcessExperience() {
                 <motion.span style={{ opacity: strategyOpacity, scale: strategyOpacity }} className="text-white inline-block">
                   Strategy
                 </motion.span>
-                <span className="mx-2 text-white/80">→</span>
+                <span className="mx-2 text-white/80"></span>
                 <motion.span style={{ opacity: execOpacity, scale: execOpacity }} className="text-white inline-block">
                   Execution
                 </motion.span>

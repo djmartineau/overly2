@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import Hero3 from "@/components/Hero3";
 import Footer from "@/components/Footer";
-import Marquee from "@/components/Marquee";
 import ProcessExperience from "@/components/ProcessExperience";
 import ContactCTA from "@/components/ContactCTA";
 import Capabilities from "@/components/Capabilities";
@@ -48,9 +47,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      <motion.section id="marquee" variants={itemVariants} transition={{ delay: 0.4 }}>
-        <Marquee />
-      </motion.section>
+      {/* Marquee temporarily disabled */}
       <motion.section id="about" variants={itemVariants} transition={{ delay: 0.4 }}>
         <About />
       </motion.section>
@@ -60,7 +57,7 @@ export default function Home() {
       <motion.section id="platforms" variants={itemVariants} transition={{ delay: 0.75 }}>
         <PlatformsSection />
       </motion.section>
-      <motion.section id="services" variants={itemVariants} transition={{ delay: 0.9 }}>
+      <motion.section id="capabilities" variants={itemVariants} transition={{ delay: 0.9 }}>
         <Capabilities />
       </motion.section>
       <motion.section id="social-network" variants={itemVariants} transition={{ delay: 1.05 }}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 /** Real logos placed in /public/brands */
@@ -19,18 +19,22 @@ const brands: { name: string; src: string }[] = [
   { name: "F6 Safegaurd", src: "/brands/f6safegaurd_logo.svg" },
   { name: "Flowstack", src: "/brands/flowstack_logo.svg" },
   { name: "Sienna & Co.", src: "/brands/siennaandco_logo.svg" },
+  { name: "Creturion", src: "/brands/creturion_logo.svg" },
+  { name: "Nassau Roofing Co.", src: "/brands/nassau_logo.svg" },
+  { name: "North Florida Asphalt", src: "/brands/northfloridaasphalt_logo.svg" },
+  { name: "SunCoast", src: "/brands/suncoast_logo.svg" },
 ];
 
 function BrandPill({ logo }: { logo: { name: string; src: string } }) {
   return (
-    <div className="inline-flex items-center justify-center h-[60px] w-[60px]">
+    <div className="inline-flex items-center justify-center h-[60px] w-[120px]">
       <Image
         src={logo.src}
         alt=""
         width={140}
         height={40}
-        className="h-[60px] w-auto object-contain opacity-30 transition-opacity duration-300"
-        priority
+        className="h-[60px] w-full object-contain opacity-30 transition-opacity duration-300"
+        loading="lazy"
         aria-hidden
       />
       <span className="sr-only">{logo.name}</span>
@@ -41,6 +45,9 @@ function BrandPill({ logo }: { logo: { name: string; src: string } }) {
 export default function Marquee() {
   const trackRef = useRef<HTMLDivElement>(null);
   const seqRef = useRef<HTMLDivElement>(null);
+
+  // Keep a stable order to avoid SSR/client mismatches
+  const [visibleBrands] = useState(brands);
 
   // Speeds in px/frame (RAF ~60fps). Tune as you like.
   const baseSpeed = 0.6; // faster scroll
@@ -57,9 +64,15 @@ export default function Marquee() {
 
     // Measure the width of ONE sequence precisely and keep it fresh on resize
     const measure = () => {
-      if (!seqRef.current) return;
+      if (!seqRef.current || !trackRef.current) return;
       const w = seqRef.current.scrollWidth; // ignores transform scaling of children
-      seqWidthRef.current = w;
+
+      if (w && w !== seqWidthRef.current) {
+        seqWidthRef.current = w;
+        // Reset offset when the content width changes to avoid visible jumps
+        offsetRef.current = 0;
+        trackRef.current.style.transform = "translate3d(0,0,0)";
+      }
     };
     measure();
 
@@ -127,19 +140,19 @@ export default function Marquee() {
         >
           {/* ONE canonical sequence to measure */}
           <div ref={seqRef} className="flex whitespace-nowrap gap-14 contain-content">
-            {brands.map((b, i) => (
+            {visibleBrands.map((b, i) => (
               <BrandPill key={`a-${i}`} logo={b} />
             ))}
           </div>
 
           {/* Two additional clones ensure coverage during wrap */}
           <div className="flex whitespace-nowrap gap-14" aria-hidden>
-            {brands.map((b, i) => (
+            {visibleBrands.map((b, i) => (
               <BrandPill key={`b-${i}`} logo={b} />
             ))}
           </div>
           <div className="flex whitespace-nowrap gap-14" aria-hidden>
-            {brands.map((b, i) => (
+            {visibleBrands.map((b, i) => (
               <BrandPill key={`c-${i}`} logo={b} />
             ))}
           </div>
