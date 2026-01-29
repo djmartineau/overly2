@@ -71,7 +71,19 @@ export default function Hero3() {
               Work with us
             </Button>
             <button
-              onClick={() => document.querySelector("#marquee")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => {
+                const aboutSection = document.getElementById("about");
+                if (aboutSection) {
+                  // Get the position of the about section relative to the viewport
+                  const rect = aboutSection.getBoundingClientRect();
+                  // Calculate scroll position: current scroll + element position - any offset you want
+                  const scrollPosition = window.scrollY + rect.top;
+                  window.scrollTo({
+                    top: scrollPosition,
+                    behavior: "smooth",
+                  });
+                }
+              }}
               className="flex items-center gap-1 text-blue-400 hover:text-blue-300 font-medium transition-colors"
             >
               <span>★</span> See our work

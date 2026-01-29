@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import Section from "./Section";
 
 const STRATEGY = [
@@ -183,8 +183,6 @@ function ExecStack({ scrollYProgress, total, strategyCount }: { scrollYProgress:
 
 export default function ProcessExperience() {
   const ref = useRef<HTMLDivElement>(null);
-  const introRef = useRef<HTMLDivElement>(null);
-  const introInView = useInView(introRef, { margin: "-20% 0px" });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end 0.9"] });
   const progressW = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
@@ -196,30 +194,22 @@ export default function ProcessExperience() {
   const strategyOpacity = useTransform(scrollYProgress, [0, execStart - 0.06, execStart + 0.06], [1, 1, 0]);
   const execOpacity = useTransform(scrollYProgress, [execStart - 0.06, execStart + 0.06, 1], [0, 1, 1]);
 
+  // Fade out the hint text as user scrolls (disappears by 15% scroll progress)
+  const hintOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+
   return (
-    <Section id="process" className="py-32">
-      <motion.div
-        ref={introRef}
-        className="mx-auto max-w-4xl px-6 mb-10 text-center"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: introInView ? 1 : 0, y: introInView ? 0 : 10 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <p className="text-sm sm:text-base text-zinc-700">
-          Scroll through our strategies and how we execute them.
-        </p>
-      </motion.div>
+    <Section id="process" className="pt-20 pb-32">
       <div ref={ref} className="relative">
         {/* Sticky header + progress */}
         <div className="sticky top-[84px] z-30 mb-12 bg-neutral-950/60 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/40">
           <div className="mx-auto max-w-4xl px-6 py-6">
             <div className="w-full text-center">
               <motion.h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-                <motion.span style={{ opacity: strategyOpacity, scale: strategyOpacity }} className="text-white inline-block">
+                <motion.span style={{ opacity: strategyOpacity }} scale={strategyOpacity} className="text-white inline-block">
                   Strategy
                 </motion.span>
                 <span className="mx-2 text-white/80"></span>
-                <motion.span style={{ opacity: execOpacity, scale: execOpacity }} className="text-white inline-block">
+                <motion.span style={{ opacity: execOpacity }} scale={execOpacity} className="text-white inline-block">
                   Execution
                 </motion.span>
               </motion.h2>
@@ -227,6 +217,13 @@ export default function ProcessExperience() {
             <div className="mt-6 h-[3px] w-full rounded-full bg-white/10 overflow-hidden">
               <motion.div style={{ width: progressW }} className="h-full bg-blue-500" />
             </div>
+            {/* Hint text below progress bar that fades on scroll */}
+            <motion.p
+              style={{ opacity: hintOpacity }}
+              className="mt-4 text-sm sm:text-base text-zinc-400 text-center"
+            >
+              Scroll through our strategies and how we execute them.
+            </motion.p>
           </div>
         </div>
 
