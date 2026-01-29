@@ -205,11 +205,11 @@ export default function ProcessExperience() {
           <div className="mx-auto max-w-4xl px-6 py-6">
             <div className="w-full text-center">
               <motion.h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-                <motion.span style={{ opacity: strategyOpacity }} scale={strategyOpacity} className="text-white inline-block">
+                <motion.span style={{ opacity: strategyOpacity }} className="text-white inline-block">
                   Strategy
                 </motion.span>
                 <span className="mx-2 text-white/80"></span>
-                <motion.span style={{ opacity: execOpacity }} scale={execOpacity} className="text-white inline-block">
+                <motion.span style={{ opacity: execOpacity }} className="text-white inline-block">
                   Execution
                 </motion.span>
               </motion.h2>
